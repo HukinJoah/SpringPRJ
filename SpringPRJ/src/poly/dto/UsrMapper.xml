@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- JAVA와 연결할 Mapper 파일 설정 -->
+<mapper namespace="poly.persistance.mapper.UsrMapper">
+<insert id="insertUsr" parameterType="UsrDTO">
+	INSERT INTO USER_INFO
+	(
+		USR_NO,
+		USR_NAME,
+		USR_ID,
+		USR_PW,
+		USR_EMAIL,
+		USR_ADMIN
+	)
+	VALUES
+	(
+		USER_NO_SEQ.NEXTVAL,
+		#{usrName},
+		#{usrID},
+		#{usrPW},
+		#{usrEmail},
+		0
+	)
+	</insert>
+	
+<select id="getUsrList" resultType="UsrDTO">
+	SELECT
+	USR_NO AS usrNo,
+	USR_ID AS usrID,
+	USR_NAME AS usrName,
+	USR_PW AS usrPW,
+	USR_EMAIL AS usrEmail
+	FROM
+	USER_INFO
+</select>
+	
+<select id="getUsrDetail" parameterType="UsrDTO" resultType="UsrDTO">
+SELECT
+	USR_NO AS usrNo,
+	USR_ID AS usrID,
+	USR_NAME AS usrName,
+	USR_PW AS usrPW,
+	USR_EMAIL AS usrEmail
+	FROM
+	USER_INFO
+WHERE
+USR_ID =#{usrID}
+</select>
+
+<select id="getLoginUsr" parameterType="UsrDTO" resultType="UsrDTO">
+SELECT
+	USR_NO AS usrNo,
+	USR_ID AS usrID,
+	USR_NAME AS usrName,
+	USR_PW AS usrPW,
+	USR_EMAIL AS usrEmail
+	USR_ADMIN AS usrAdmin
+	FROM
+	USER_INFO
+WHERE
+USR_ID =#{usrID} AND USR_PW =#{usrPW}
+</select>
+
+<update id="updateUsrProc" parameterType="UsrDTO">
+UPDATE USER_INFO
+SET
+USR_NAME=#{usrName},
+USR_PW=#{usrPW},
+USR_EMAIL=#{usrEmail}
+WHERE USR_ID=#{usrID}
+</update>
+
+<delete id="deleteUsr" parameterType="UsrDTO">
+DELETE FROM USER_INFO
+WHERE USR_ID=#{usrID}
+</delete>
+	
+	<select id="idChk" parameterType="UsrDTO" resultType="integer">
+	SELECT
+	USR_ID AS usrID
+	FROM
+	USER_INFO
+	WHERE
+	USR_ID =#{usrID}
+</select>
+</mapper>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- JAVA와 연결할 Mapper 파일 설정 -->
+<mapper namespace="poly.persistance.mapper.UsrMapper">
+<insert id="usrRegProc" parameterType="UsrDTO"> <!-- 회원가입 -->
+	INSERT INTO USER_INFO
+	(
+		USR_NAME,
+		USR_ID,
+		USR_PW,
+		USR_EMAIL,
+		USR_HPNUM,
+		USR_ADMIN,
+		USR_INTRO
+	)
+	VALUES
+	(
+		#{usrName},
+		#{usrID},
+		#{usrPW},
+		#{usrEmail},
+		#{usrHPNum},
+		0,
+		"소개말"
+	)
+</insert>
+
+<select id="loginProc" parameterType="UsrDTO" resultType="UsrDTO"> <!--  로그인 --> 
+	SELECT
+	USR_NO AS usrNo,
+	USR_ID AS usrID,
+	USR_NAME AS usrName,
+	USR_PW AS usrPW,
+	USR_EMAIL AS usrEmail,
+	USR_HPNUM AS usrHPNum,
+	USR_ADMIN AS usrAdmin,
+	USR_INTRO AS usrIntro
+	FROM
+	USER_INFO
+WHERE
+USR_ID =#{usrID} AND USR_PW =#{usrPW}
+</select>
+
+<select id="getusrList" resultType="UsrDTO"> <!-- 회원리스트 -->
+	SELECT
+	USR_NO AS usrNo,
+	USR_ID AS usrID,
+	USR_NAME AS usrName,
+	USR_PW AS usrPW,
+	USR_EMAIL AS usrEmail,
+	USR_HPNUM AS usrHPNum
+	FROM
+	USER_INFO
+</select>
+
+<delete id="deleteUsr" parameterType="UsrDTO"> <!-- 회원탈퇴 -->
+	DELETE FROM USER_INFO
+	WHERE USR_ID=#{usrID}
+</delete>
+
+<select id="getusrProfile" parameterType="UsrDTO" resultType="UsrDTO"> <!-- 회원상세 -->
+	SELECT
+	USR_NO AS usrNo,
+	USR_ID AS usrID,
+	USR_NAME AS usrName,
+	USR_PW AS usrPW,
+	USR_EMAIL AS usrEmail,
+	USR_HPNUM AS usrHPNum,
+	USR_INTRO AS usrIntro
+	FROM
+	USER_INFO
+	WHERE
+	USR_ID =#{usrID}
+</select>
+
+<select id="idChk" parameterType="string" resultType="int">
+	SELECT
+	COUNT(*)
+	FROM
+	USER_INFO
+	WHERE
+	USR_ID =#{usrID}
+</select>
+
+</mapper>
